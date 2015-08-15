@@ -1,0 +1,4 @@
+[package]
+name = "htmlstream"
+version = "0.1.0"
+authors = ["Zongmin Lei <leizongmin@gmail.com>"]
