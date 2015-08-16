@@ -1,14 +1,37 @@
+#![crate_name = "htmlstream"]
+#![doc(html_root_url = "https://leizongmin.github.io/htmlstream-rust/")]
+
+
+/// The HTML source position
 #[derive(Debug)]
 pub struct Position {
     start: usize,
     end: usize,
 }
 
+/// The tag state
+///
+/// + `Text`: not a HTML tag, e.g. hello
+/// + `Opening`: an opening tag, e.g. <a href="#">
+/// + `Closing`: a closing tag, e.g. </a>
+/// + `SelfClosing`: a selfclosing tag,e.g. <br />
 #[derive(Debug)]
 pub enum HTMLTagState {
     Text, Opening, Closing, SelfClosing
 }
 
+/// The HTML tag
+///
+/// # Examples
+///
+/// ```
+/// HTMLTag {
+///     name: "a".to_string(),
+///     html: "<a href=\"#\">link</a>".to_string(),
+///     attributes: "href=\"#\"".to_string(),
+///     state: HTMLTagState::Opening,
+/// }
+/// ```
 #[derive(Debug)]
 pub struct HTMLTag {
     name: String,
@@ -17,6 +40,16 @@ pub struct HTMLTag {
     state: HTMLTagState
 }
 
+/// The tag attribute
+///
+/// # Examples
+///
+/// ```
+/// HTMLTagAttribute {
+///     name: "href".to_string(),
+///     value: "#".to_string(),
+/// }
+/// ```
 #[derive(Debug)]
 pub struct HTMLTagAttribute {
     name: String,
@@ -32,6 +65,16 @@ const CHAR_SPACE: u8 = b' ';
 const CHAR_EQUAL: u8 = b'=';
 
 
+/// Parse HTML source, find the tags and call `on_tag()` every time
+///
+/// # Examples
+///
+/// ```
+/// let html = "this is a test: <a href=\"http://rust-lang.org\">The Rust Programing Language</a>";
+/// parse_html(html, |pos: &Position, tag: &HTMLTag| {
+///     println!("{:?} {:?}", pos, tag);
+/// });
+/// ```
 pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
     let mut is_tag_start: bool = false;
     let mut is_quote_start: bool = false;
@@ -55,7 +98,6 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
 
         if is_tag_start {
 
-            // 获取标签名称
             if !is_get_tag_name {
                 if CHAR_SLASH == c && last_index + 2 == current_index {
                     is_closing_tag = true;
@@ -72,7 +114,7 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
                 }
             }
 
-            // 如果当前字符出现在引号内，只有遇到相同的引号才能结束
+            // only when match the same `quote` char
             if is_quote_start {
                 if c == quote_char {
                     is_quote_start = false;
@@ -82,9 +124,9 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
                 }
             }
 
-            // 引号开始
+            // quote start
             if CHAR_SINGLE_QUOTE == c || CHAR_DOUBLE_QUOTE == c {
-                // 仅当前一个字符为等于号时引号才有作用
+                // only when the last char is `equal`
                 if CHAR_EQUAL == last_char {
                     is_quote_start = true;
                     quote_char = c;
@@ -92,9 +134,8 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
                 continue;
             }
 
-            // 标签结束
+            // tag end
             if CHAR_GT == c {
-                // 触发新标签
                 let tag_html = &html[last_index..current_index];
                 let position = Position { start: last_index, end: current_index };
 
@@ -139,7 +180,7 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
         } else {
 
             if CHAR_LT == c {
-                // 中间的文本
+                // text
                 if last_index < current_index - 1 {
                     let tag_html = &html[last_index..(current_index - 1)];
                     let position = Position { start: last_index, end: current_index };
@@ -152,7 +193,7 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
                     on_tag(&position, &tag);
                 }
 
-                // 重新初始化
+                // init
                 is_tag_start = true;
                 is_get_tag_name = false;
                 is_closing_tag = false;
@@ -164,7 +205,7 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
         }
     }
 
-    // 剩余部分的文本
+    // the rest text
     if last_index < current_index - 1 {
         let tag_html = &html[last_index..];
         let position = Position { start: last_index, end: current_index };
@@ -178,6 +219,17 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
     }
 }
 
+
+/// Parse attributes strings, find the attribute and call `on_tag_attribute()` every time
+///
+/// # Examples
+///
+/// ```
+/// let attributes = "href=\"http://rust-lang.org\" title=Rust disabled";
+/// parse_attributes(html, |pos: &Position, attr: &HTMLTagAttribute| {
+///     println!("{:?} {:?}", pos, attr);
+/// });
+/// ```
 pub fn parse_attributes<F>(html: &String, on_tag_attribute: F) where F: Fn(&Position, &HTMLTagAttribute) {
     let mut is_quote_start: bool = false;
     let mut is_attribute_start: bool = false;
@@ -201,10 +253,9 @@ pub fn parse_attributes<F>(html: &String, on_tag_attribute: F) where F: Fn(&Posi
 
             if is_get_attribute_name {
 
-                // 如果当前字符出现在引号内，只有遇到相同的引号才能结束
                 if is_quote_start {
                     if c == quote_char {
-                        // 如果当前字符出现在引号内，只有遇到相同的引号才能结束
+                        // only when match the same `quote` char
                         if c == quote_char {
                             let name = &html[last_index..(value_start_index - 1)];
                             let value = &html[(value_start_index + 1)..(current_index - 1)];
@@ -225,9 +276,9 @@ pub fn parse_attributes<F>(html: &String, on_tag_attribute: F) where F: Fn(&Posi
                     }
                 }
 
-                // 引号开始
+                // quote start
                 if CHAR_SINGLE_QUOTE == c || CHAR_DOUBLE_QUOTE == c {
-                    // 仅当前一个字符为等于号时引号才有作用
+                    // only when the last char is `equal`
                     if CHAR_EQUAL == last_char {
                         is_quote_start = true;
                         quote_char = c;
@@ -235,7 +286,7 @@ pub fn parse_attributes<F>(html: &String, on_tag_attribute: F) where F: Fn(&Posi
                     continue;
                 }
 
-                // 空格结束当前标签
+                // only when match a `blank` char
                 if c <= CHAR_SPACE {
                     let name = &html[last_index..(value_start_index - 1)];
                     let value = &html[(value_start_index)..(current_index - 1)];
@@ -254,14 +305,14 @@ pub fn parse_attributes<F>(html: &String, on_tag_attribute: F) where F: Fn(&Posi
 
             } else {
 
-                // 等于号表示属性值开始
+                // only when match an `equal` char, start the attribute value
                 if CHAR_EQUAL == c {
                     value_start_index = current_index;
                     is_get_attribute_name = true;
                     continue;
                 }
 
-                // 空格结束当前标签
+                // only when match an `blank` char, stop current attribute
                 if c <= CHAR_SPACE {
                     let name = &html[last_index..(current_index - 1)];
                     let position = Position { start: last_index, end: current_index };
@@ -281,7 +332,7 @@ pub fn parse_attributes<F>(html: &String, on_tag_attribute: F) where F: Fn(&Posi
 
         } else {
 
-            // 忽略空白字符
+            // ignore `blank` char
             if c <= CHAR_SPACE {
                 continue;
             }
@@ -302,24 +353,4 @@ pub fn parse_attributes<F>(html: &String, on_tag_attribute: F) where F: Fn(&Posi
         value: "".to_string()
     };
     on_tag_attribute(&position, &attribute);
-}
-
-
-fn test(html: &str) {
-    println!("\n");
-    parse_html(html, |pos: &Position, tag: &HTMLTag| {
-        println!("{:?} {:?}", pos, tag);
-        if tag.attributes.len() > 0 {
-            println!("  parse: {:?}", &tag.attributes);
-            parse_attributes(&tag.attributes, |pos: &Position, attr: &HTMLTagAttribute| {
-                println!("  -> {:?} {:?}", pos, attr);
-            });
-        }
-    });
-    println!("\n");
-}
-
-fn main() {
-    //test("<b>这里是html: <a href='#' title=ok disabled>link</a> yes <b /> goosa");
-    test("<a \"ok\" href=\"<a href=\"#\"target=_blank title=\"haha\" disabled>A</a>\">B</a>");
 }
