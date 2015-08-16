@@ -29,6 +29,7 @@ const CHAR_LT: u8 = b'<';
 const CHAR_GT: u8 = b'>';
 const CHAR_SLASH: u8 = b'/';
 const CHAR_SPACE: u8 = b' ';
+const CHAR_EQUAL: u8 = b'=';
 
 
 pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
@@ -39,6 +40,7 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
     let mut current_tag_name: &str = "";
 
     let mut quote_char: u8 = 0;
+    let mut last_char: u8 = 0;
     let mut last_index: usize = 0;
     let mut current_index: usize = 0;
     let mut attributes_start_index: usize = 0;
@@ -46,6 +48,9 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
     let html_bytes = html.as_bytes();
     for b in html_bytes {
         let c = *b;
+        if current_index > 0 {
+            last_char = html_bytes[current_index - 1];;
+        }
         current_index += 1;
 
         if is_tag_start {
@@ -55,7 +60,7 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
                 if CHAR_SLASH == c && last_index + 2 == current_index {
                     is_closing_tag = true;
                 } else {
-                    if CHAR_SPACE == c || CHAR_SLASH == c || CHAR_GT == c || CHAR_LT == c {
+                    if c <= CHAR_SPACE || CHAR_SLASH == c || CHAR_GT == c || CHAR_LT == c {
                         if is_closing_tag {
                             current_tag_name = &html[(last_index + 2)..(current_index - 1)];
                         } else {
@@ -79,8 +84,11 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
 
             // 引号开始
             if CHAR_SINGLE_QUOTE == c || CHAR_DOUBLE_QUOTE == c {
-                is_quote_start = true;
-                quote_char = c;
+                // 仅当前一个字符为等于号时引号才有作用
+                if CHAR_EQUAL == last_char {
+                    is_quote_start = true;
+                    quote_char = c;
+                }
                 continue;
             }
 
@@ -88,13 +96,12 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
             if CHAR_GT == c {
                 // 触发新标签
                 let tag_html = &html[last_index..current_index];
-                let tag_bytes = tag_html.as_bytes();
                 let position = Position { start: last_index, end: current_index };
 
                 let tag_state: HTMLTagState;
-                if CHAR_SLASH == tag_bytes[1] {
+                if is_closing_tag {
                     tag_state = HTMLTagState::Closing;
-                } else if CHAR_SLASH == tag_bytes[tag_bytes.len() - 2] {
+                } else if CHAR_SLASH == last_char {
                     tag_state = HTMLTagState::SelfClosing;
                 } else {
                     tag_state = HTMLTagState::Opening;
