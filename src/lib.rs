@@ -3,10 +3,19 @@
 
 
 /// The HTML source position
+///
+/// # Examples
+/// ```
+/// # use self::htmlstream::*;
+/// let pos = Position {
+///     start: 0,
+///     end: 10,
+/// };
+/// ```
 #[derive(Debug)]
 pub struct Position {
-    start: usize,
-    end: usize,
+    pub start: usize,
+    pub end: usize,
 }
 
 /// The tag state
@@ -25,19 +34,20 @@ pub enum HTMLTagState {
 /// # Examples
 ///
 /// ```
-/// HTMLTag {
+/// # use self::htmlstream::*;
+/// let tag = HTMLTag {
 ///     name: "a".to_string(),
 ///     html: "<a href=\"#\">link</a>".to_string(),
 ///     attributes: "href=\"#\"".to_string(),
 ///     state: HTMLTagState::Opening,
-/// }
+/// };
 /// ```
 #[derive(Debug)]
 pub struct HTMLTag {
-    name: String,
-    html: String,
-    attributes: String,
-    state: HTMLTagState
+    pub name: String,
+    pub html: String,
+    pub attributes: String,
+    pub state: HTMLTagState
 }
 
 /// The tag attribute
@@ -45,15 +55,16 @@ pub struct HTMLTag {
 /// # Examples
 ///
 /// ```
-/// HTMLTagAttribute {
+/// # use self::htmlstream::*;
+/// let attr = HTMLTagAttribute {
 ///     name: "href".to_string(),
 ///     value: "#".to_string(),
-/// }
+/// };
 /// ```
 #[derive(Debug)]
 pub struct HTMLTagAttribute {
-    name: String,
-    value: String,
+    pub name: String,
+    pub value: String,
 }
 
 const CHAR_SINGLE_QUOTE: u8 = b'\'';
@@ -70,6 +81,7 @@ const CHAR_EQUAL: u8 = b'=';
 /// # Examples
 ///
 /// ```
+/// # use self::htmlstream::*;
 /// let html = "this is a test: <a href=\"http://rust-lang.org\">The Rust Programing Language</a>";
 /// parse_html(html, |pos: &Position, tag: &HTMLTag| {
 ///     println!("{:?} {:?}", pos, tag);
@@ -225,12 +237,13 @@ pub fn parse_html<F>(html: &str, on_tag: F) where F: Fn(&Position, &HTMLTag) {
 /// # Examples
 ///
 /// ```
+/// # use self::htmlstream::*;
 /// let attributes = "href=\"http://rust-lang.org\" title=Rust disabled";
-/// parse_attributes(html, |pos: &Position, attr: &HTMLTagAttribute| {
+/// parse_attributes(attributes, |pos: &Position, attr: &HTMLTagAttribute| {
 ///     println!("{:?} {:?}", pos, attr);
 /// });
 /// ```
-pub fn parse_attributes<F>(html: &String, on_tag_attribute: F) where F: Fn(&Position, &HTMLTagAttribute) {
+pub fn parse_attributes<F>(html: &str, on_tag_attribute: F) where F: Fn(&Position, &HTMLTagAttribute) {
     let mut is_quote_start: bool = false;
     let mut is_attribute_start: bool = false;
     let mut is_get_attribute_name: bool = false;
@@ -345,7 +358,7 @@ pub fn parse_attributes<F>(html: &String, on_tag_attribute: F) where F: Fn(&Posi
         }
     }
 
-    // 剩余部分的文本
+    // the rest text
     let name = &html[last_index..];
     let position = Position { start: last_index, end: current_index };
     let attribute = HTMLTagAttribute {
