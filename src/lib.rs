@@ -12,7 +12,7 @@
 ///     end: 10,
 /// };
 /// ```
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Position {
     pub start: usize,
     pub end: usize,
@@ -24,7 +24,7 @@ pub struct Position {
 /// + `Opening`: an opening tag, e.g. <a href="#">
 /// + `Closing`: a closing tag, e.g. </a>
 /// + `SelfClosing`: a selfclosing tag,e.g. <br />
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum HTMLTagState {
     Text, Opening, Closing, SelfClosing
 }
@@ -42,7 +42,7 @@ pub enum HTMLTagState {
 ///     state: HTMLTagState::Opening,
 /// };
 /// ```
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct HTMLTag {
     pub name: String,
     pub html: String,
@@ -61,7 +61,7 @@ pub struct HTMLTag {
 ///     value: "#".to_string(),
 /// };
 /// ```
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct HTMLTagAttribute {
     pub name: String,
     pub value: String,
@@ -366,4 +366,15 @@ pub fn parse_attributes<F>(html: &str, on_tag_attribute: F) where F: Fn(&Positio
         value: "".to_string()
     };
     on_tag_attribute(&position, &attribute);
+}
+
+
+#[test]
+fn test_parse_html() {
+    let html = "this is a test: <a href=\"http://rust-lang.org\">The Rust Programing Language</a>";
+    let mut tags: Vec<&HTMLTag> = vec![];
+    parse_html(html, |pos: &Position, tag: &HTMLTag| {
+        println!("{:?} {:?}", pos, tag);
+        tags.push(tag);
+    });
 }
