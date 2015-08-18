@@ -21,7 +21,7 @@
 //!
 //! Output:
 //!
-//! ```
+//! ```text
 //! Position { start: 0, end: 16 } HTMLTag { name: "", html: "this is a test: ", attributes: "", state: Text }
 //! Position { start: 16, end: 47 } HTMLTag { name: "a", html: "<a href=\"http://rust-lang.org\">", attributes: "href=\"http://rust-lang.org\"", state: Opening }
 //!     Position { start: 0, end: 27 } HTMLTagAttribute { name: "href", value: "http://rust-lang.org" }
