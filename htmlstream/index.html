@@ -45,7 +45,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/htmlstream/lib.rs.html#1-369' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/htmlstream/lib.rs.html#1-10' title='goto source code'>[src]</a></span></h1>
 <h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
                     <tr class=' module-item'>
@@ -67,6 +67,22 @@
                     </tr>
                 
                     <tr class=' module-item'>
+                        <td><a class='struct' href='struct.HTMLTagAttributeIterator.html'
+                               title='htmlstream::HTMLTagAttributeIterator'>HTMLTagAttributeIterator</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.HTMLTagIterator.html'
+                               title='htmlstream::HTMLTagIterator'>HTMLTagIterator</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
                         <td><a class='struct' href='struct.Position.html'
                                title='htmlstream::Position'>Position</a></td>
                         <td class='docblock short'>
@@ -84,22 +100,79 @@
 
                         </td>
                     </tr>
+                </table><h2 id='constants' class='section-header'><a href="#constants">Constants</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.CHAR_DOUBLE_QUOTE.html'
+                               title='htmlstream::CHAR_DOUBLE_QUOTE'>CHAR_DOUBLE_QUOTE</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.CHAR_EQUAL.html'
+                               title='htmlstream::CHAR_EQUAL'>CHAR_EQUAL</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.CHAR_GT.html'
+                               title='htmlstream::CHAR_GT'>CHAR_GT</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.CHAR_LT.html'
+                               title='htmlstream::CHAR_LT'>CHAR_LT</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.CHAR_SINGLE_QUOTE.html'
+                               title='htmlstream::CHAR_SINGLE_QUOTE'>CHAR_SINGLE_QUOTE</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.CHAR_SLASH.html'
+                               title='htmlstream::CHAR_SLASH'>CHAR_SLASH</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='constant' href='constant.CHAR_SPACE.html'
+                               title='htmlstream::CHAR_SPACE'>CHAR_SPACE</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
                 </table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
 <table>
                     <tr class=' module-item'>
-                        <td><a class='fn' href='fn.parse_attributes.html'
-                               title='htmlstream::parse_attributes'>parse_attributes</a></td>
+                        <td><a class='fn' href='fn.attr_iter.html'
+                               title='htmlstream::attr_iter'>attr_iter</a></td>
                         <td class='docblock short'>
-                             <p>Parse attributes strings, find the attribute and call <code>on_tag_attribute()</code> every time</p>
+                             <p>Return a HTMLTagAttribute Iterator</p>
 
                         </td>
                     </tr>
                 
                     <tr class=' module-item'>
-                        <td><a class='fn' href='fn.parse_html.html'
-                               title='htmlstream::parse_html'>parse_html</a></td>
+                        <td><a class='fn' href='fn.tag_iter.html'
+                               title='htmlstream::tag_iter'>tag_iter</a></td>
                         <td class='docblock short'>
-                             <p>Parse HTML source, find the tags and call <code>on_tag()</code> every time</p>
+                             <p>Return a HTMLTag Iterator</p>
 
                         </td>
                     </tr>
