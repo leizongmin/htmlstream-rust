@@ -1,5 +1,5 @@
 # htmlstream-rust
-Simple HTML parser
+Lightweight HTML parser
 
 Documents: https://leizongmin.github.io/htmlstream-rust/
 
@@ -7,17 +7,14 @@ Examples:
 
 ```rust
 extern crate htmlstream;
-use htmlstream::{Position, HTMLTag, HTMLTagAttribute, HTMLTagState, parse_html, parse_attributes}
 
 let html = "this is a test: <a href=\"http://rust-lang.org\">The Rust Programing Language</a>";
-parse_html(html, |pos: &Position, tag: &HTMLTag| {
+for (pos, tag) in htmlstream::tag_iter(html) {
     println!("{:?} {:?}", pos, tag);
-});
-
-let attributes = "href=\"http://rust-lang.org\" title=Rust disabled";
-parse_attributes(html, |pos: &Position, attr: &HTMLTagAttribute| {
-    println!("{:?} {:?}", pos, attr);
-});
+    for (pos, attr) in htmlstream::attr_iter(&tag.attributes) {
+        println!("    {:?} {:?}", pos, attr);
+    }
+}
 ```
 
 ## License
