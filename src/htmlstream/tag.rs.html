@@ -219,8 +219,28 @@
 <span id="177">177</span>
 <span id="178">178</span>
 <span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>base</span>::<span class='op'>*</span>;
+
+
+<span class='kw'>const</span> <span class='ident'>CHAR_SINGLE_QUOTE</span>: <span class='ident'>u8</span> <span class='op'>=</span> <span class='string'>b&#39;\&#39;&#39;</span>;
+<span class='kw'>const</span> <span class='ident'>CHAR_DOUBLE_QUOTE</span>: <span class='ident'>u8</span> <span class='op'>=</span> <span class='string'>b&#39;&quot;&#39;</span>;
+<span class='kw'>const</span> <span class='ident'>CHAR_LT</span>: <span class='ident'>u8</span> <span class='op'>=</span> <span class='string'>b&#39;&lt;&#39;</span>;
+<span class='kw'>const</span> <span class='ident'>CHAR_GT</span>: <span class='ident'>u8</span> <span class='op'>=</span> <span class='string'>b&#39;&gt;&#39;</span>;
+<span class='kw'>const</span> <span class='ident'>CHAR_SLASH</span>: <span class='ident'>u8</span> <span class='op'>=</span> <span class='string'>b&#39;/&#39;</span>;
+<span class='kw'>const</span> <span class='ident'>CHAR_SPACE</span>: <span class='ident'>u8</span> <span class='op'>=</span> <span class='string'>b&#39; &#39;</span>;
+<span class='kw'>const</span> <span class='ident'>CHAR_EQUAL</span>: <span class='ident'>u8</span> <span class='op'>=</span> <span class='string'>b&#39;=&#39;</span>;
+
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>HTMLTagIterator</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {

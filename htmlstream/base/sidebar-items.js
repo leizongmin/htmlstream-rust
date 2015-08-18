@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["CHAR_DOUBLE_QUOTE",""],["CHAR_EQUAL",""],["CHAR_GT",""],["CHAR_LT",""],["CHAR_SINGLE_QUOTE",""],["CHAR_SLASH",""],["CHAR_SPACE",""]],"enum":[["HTMLTagState","The tag state"]],"struct":[["HTMLTag","The HTML tag"],["HTMLTagAttribute","The tag attribute"],["Position","The HTML source position"]]});
+initSidebarItems({"enum":[["HTMLTagState","The tag state"]],"struct":[["HTMLTag","The HTML tag"],["HTMLTagAttribute","The tag attribute"],["Position","The HTML source position"]]});

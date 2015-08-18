@@ -50,9 +50,65 @@
 <span id="8"> 8</span>
 <span id="9"> 9</span>
 <span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>crate_name</span> <span class='op'>=</span> <span class='string'>&quot;htmlstream&quot;</span>]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>doc</span>(<span class='ident'>html_root_url</span> <span class='op'>=</span> <span class='string'>&quot;https://leizongmin.github.io/htmlstream-rust/&quot;</span>)]</span>
+
+<span class='doccomment'>//! #Lightweight HTML parser</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Examples:</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! ```rust</span>
+<span class='doccomment'>//! extern crate htmlstream;</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! fn main() {</span>
+<span class='doccomment'>//!     let html = &quot;this is a test: &lt;a href=\&quot;http://rust-lang.org\&quot;&gt;The Rust Programing Language&lt;/a&gt;&quot;;</span>
+<span class='doccomment'>//!     for (pos, tag) in htmlstream::tag_iter(html) {</span>
+<span class='doccomment'>//!         println!(&quot;{:?} {:?}&quot;, pos, tag);</span>
+<span class='doccomment'>//!         for (pos, attr) in htmlstream::attr_iter(&amp;tag.attributes) {</span>
+<span class='doccomment'>//!             println!(&quot;    {:?} {:?}&quot;, pos, attr);</span>
+<span class='doccomment'>//!         }</span>
+<span class='doccomment'>//!     }</span>
+<span class='doccomment'>//! }</span>
+<span class='doccomment'>//! ```</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Output:</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! ```</span>
+<span class='doccomment'>//! Position { start: 0, end: 16 } HTMLTag { name: &quot;&quot;, html: &quot;this is a test: &quot;, attributes: &quot;&quot;, state: Text }</span>
+<span class='doccomment'>//! Position { start: 16, end: 47 } HTMLTag { name: &quot;a&quot;, html: &quot;&lt;a href=\&quot;http://rust-lang.org\&quot;&gt;&quot;, attributes: &quot;href=\&quot;http://rust-lang.org\&quot;&quot;, state: Opening }</span>
+<span class='doccomment'>//!     Position { start: 0, end: 27 } HTMLTagAttribute { name: &quot;href&quot;, value: &quot;http://rust-lang.org&quot; }</span>
+<span class='doccomment'>//! Position { start: 47, end: 75 } HTMLTag { name: &quot;&quot;, html: &quot;The Rust Programing Language&quot;, attributes: &quot;&quot;, state: Text }</span>
+<span class='doccomment'>//! Position { start: 75, end: 79 } HTMLTag { name: &quot;a&quot;, html: &quot;&lt;/a&gt;&quot;, attributes: &quot;&quot;, state: Closing }</span>
+<span class='doccomment'>//! ```</span>
 
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>base</span>::<span class='op'>*</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>tag</span>::<span class='op'>*</span>;
