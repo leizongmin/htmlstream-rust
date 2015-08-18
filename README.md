@@ -11,6 +11,16 @@ Lightweight HTML parser
 https://leizongmin.github.io/htmlstream-rust/
 
 
+### Dependencies
+
+Add the following to the *Cargo.toml* file:
+
+```toml
+[dependencies.htmlstream]
+version = "*"
+```
+
+
 ### Examples
 
 ```rust
