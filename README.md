@@ -1,12 +1,17 @@
 # htmlstream-rust
 Lightweight HTML parser
 
-### Document
+[![Build Status](https://travis-ci.org/leizongmin/htmlstream-rust.svg?branch=master)](https://travis-ci.org/leizongmin/htmlstream-rust)
+[![](http://meritbadge.herokuapp.com/htmlstream)](https://crates.io/crates/htmlstream)
+[![](https://img.shields.io/crates/d/htmlstream.svg)](https://crates.io/crates/htmlstream)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+
+### Documents
 
 https://leizongmin.github.io/htmlstream-rust/
 
 
-### Examples:
+### Examples
 
 ```rust
 extern crate htmlstream;
