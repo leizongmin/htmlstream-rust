@@ -1,7 +1,12 @@
 [package]
 name = "htmlstream"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Zongmin Lei <leizongmin@gmail.com>"]
+readme = "README.md"
+
+repository = "https://leizongmin.github.io/htmlstream-rust/"
+homepage = "https://leizongmin.github.io/htmlstream-rust/"
+documentation = "https://leizongmin.github.io/htmlstream-rust/"
 
 description = "Lightweight HTML parser for rust"
 license = "MIT"
