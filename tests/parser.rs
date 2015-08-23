@@ -49,3 +49,21 @@ fff=ggg hhhh";
         (Position { start: 41, end: 45 }, HTMLTagAttribute { name: "hhhh".to_string(), value: "".to_string() })
     ]);
 }
+
+#[test]
+fn test_parse_html_1() {
+    let html = "<a href=\"javascript:alert(/xss/)\" title=ok disabled>hello</a> <b>ok</b>";
+    let mut list: Vec<(Position, HTMLTag)> = vec![];
+    for (pos, tag) in tag_iter(&html) {
+        list.push((pos, tag));
+    }
+    assert_eq!(list, [
+        (Position { start: 0, end: 52 }, HTMLTag { name: "a".to_string(), html: "<a href=\"javascript:alert(/xss/)\" title=ok disabled>".to_string(), attributes: "href=\"javascript:alert(/xss/)\" title=ok disabled".to_string(), state: Opening }),
+        (Position { start: 52, end: 57 }, HTMLTag { name: "".to_string(), html: "hello".to_string(), attributes: "".to_string(), state: Text }),
+        (Position { start: 57, end: 61 }, HTMLTag { name: "a".to_string(), html: "</a>".to_string(), attributes: "".to_string(), state: Closing }),
+        (Position { start: 61, end: 62 }, HTMLTag { name: "".to_string(), html: " ".to_string(), attributes: "".to_string(), state: Text }),
+        (Position { start: 62, end: 65 }, HTMLTag { name: "b".to_string(), html: "<b>".to_string(), attributes: "".to_string(), state: Opening }),
+        (Position { start: 65, end: 67 }, HTMLTag { name: "".to_string(), html: "ok".to_string(), attributes: "".to_string(), state: Text }),
+        (Position { start: 67, end: 71 }, HTMLTag { name: "b".to_string(), html: "</b>".to_string(), attributes: "".to_string(), state: Closing })
+    ]);
+}

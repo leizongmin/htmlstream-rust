@@ -144,21 +144,23 @@ impl<'a> Iterator for HTMLTagIterator<'a> {
             } else {
 
                 if CHAR_LT == c {
+                    let last_index = self.last_index;
+                    self.is_tag_start = true;
+                    self.is_get_tag_name = false;
+                    self.is_closing_tag = false;
+                    self.is_quote_start = false;
+                    self.last_index = self.current_index - 1;
+
                     // text
-                    if self.last_index < self.current_index - 1 {
-                        let tag_html = &self.html[self.last_index..(self.current_index - 1)];
-                        let position = Position { start: self.last_index, end: self.current_index - 1 };
+                    if last_index < self.current_index - 1 {
+                        let tag_html = &self.html[last_index..(self.current_index - 1)];
+                        let position = Position { start: last_index, end: self.current_index - 1 };
                         let tag = HTMLTag {
                             name: "".to_string(),
                             html: tag_html.to_string(),
                             attributes: "".to_string(),
                             state: HTMLTagState::Text,
                         };
-                        self.is_tag_start = true;
-                        self.is_get_tag_name = false;
-                        self.is_closing_tag = false;
-                        self.is_quote_start = false;
-                        self.last_index = self.current_index - 1;
                         return Some((position, tag));
                     }
                 }
