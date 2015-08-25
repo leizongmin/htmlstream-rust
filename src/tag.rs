@@ -1,15 +1,5 @@
 use base::*;
 
-
-const CHAR_SINGLE_QUOTE: u8 = b'\'';
-const CHAR_DOUBLE_QUOTE: u8 = b'"';
-const CHAR_LT: u8 = b'<';
-const CHAR_GT: u8 = b'>';
-const CHAR_SLASH: u8 = b'/';
-const CHAR_SPACE: u8 = b' ';
-const CHAR_EQUAL: u8 = b'=';
-
-
 #[derive(Debug)]
 pub struct HTMLTagIterator<'a> {
     pub html: &'a str,
@@ -64,10 +54,10 @@ impl<'a> Iterator for HTMLTagIterator<'a> {
             if self.is_tag_start {
 
                 if !self.is_get_tag_name {
-                    if CHAR_SLASH == c && self.last_index + 2 == self.current_index {
+                    if b'/' == c && self.last_index + 2 == self.current_index {
                         self.is_closing_tag = true;
                     } else {
-                        if c <= CHAR_SPACE || CHAR_SLASH == c || CHAR_GT == c || CHAR_LT == c {
+                        if c <= b' ' || b'/' == c || b'>' == c || b'<' == c {
                             if self.is_closing_tag {
                                 self.current_tag_name = &self.html[(self.last_index + 2)..(self.current_index - 1)];
                             } else {
@@ -90,9 +80,9 @@ impl<'a> Iterator for HTMLTagIterator<'a> {
                 }
 
                 // quote start
-                if CHAR_SINGLE_QUOTE == c || CHAR_DOUBLE_QUOTE == c {
+                if b'\'' == c || b'"' == c {
                     // only when the last char is `equal`
-                    if CHAR_EQUAL == self.last_char {
+                    if b'=' == self.last_char {
                         self.is_quote_start = true;
                         self.quote_char = c;
                     }
@@ -100,14 +90,14 @@ impl<'a> Iterator for HTMLTagIterator<'a> {
                 }
 
                 // tag end
-                if CHAR_GT == c {
+                if b'>' == c {
                     let tag_html = &self.html[self.last_index..self.current_index];
                     let position = Position { start: self.last_index, end: self.current_index };
 
                     let tag_state: HTMLTagState;
                     if self.is_closing_tag {
                         tag_state = HTMLTagState::Closing;
-                    } else if CHAR_SLASH == self.last_char {
+                    } else if b'/' == self.last_char {
                         tag_state = HTMLTagState::SelfClosing;
                     } else {
                         tag_state = HTMLTagState::Opening;
@@ -143,7 +133,7 @@ impl<'a> Iterator for HTMLTagIterator<'a> {
 
             } else {
 
-                if CHAR_LT == c {
+                if b'<' == c {
                     let last_index = self.last_index;
                     self.is_tag_start = true;
                     self.is_get_tag_name = false;

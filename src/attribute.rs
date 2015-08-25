@@ -1,12 +1,6 @@
 use base::*;
 
 
-const CHAR_SINGLE_QUOTE: u8 = b'\'';
-const CHAR_DOUBLE_QUOTE: u8 = b'"';
-const CHAR_SPACE: u8 = b' ';
-const CHAR_EQUAL: u8 = b'=';
-
-
 #[derive(Debug)]
 pub struct HTMLTagAttributeIterator<'a> {
     pub html: &'a str,
@@ -85,9 +79,9 @@ impl<'a> Iterator for HTMLTagAttributeIterator<'a> {
                     }
 
                     // quote start
-                    if CHAR_SINGLE_QUOTE == c || CHAR_DOUBLE_QUOTE == c {
+                    if b'\'' == c || b'"' == c {
                         // only when the last char is `equal`
-                        if CHAR_EQUAL == self.last_char {
+                        if b'=' == self.last_char {
                             self.is_quote_start = true;
                             self.quote_char = c;
                         }
@@ -95,7 +89,7 @@ impl<'a> Iterator for HTMLTagAttributeIterator<'a> {
                     }
 
                     // only when match a `blank` char
-                    if c <= CHAR_SPACE {
+                    if c <= b' ' {
                         let name = &self.html[self.last_index..(self.value_start_index - 1)];
                         let value = &self.html[(self.value_start_index)..(self.current_index - 1)];
                         let position = Position { start: self.last_index, end: self.current_index - 1 };
@@ -110,14 +104,14 @@ impl<'a> Iterator for HTMLTagAttributeIterator<'a> {
                 } else {
 
                     // only when match an `equal` char, start the attribute value
-                    if CHAR_EQUAL == c {
+                    if b'=' == c {
                         self.value_start_index = self.current_index;
                         self.is_get_attribute_name = true;
                         continue;
                     }
 
                     // only when match an `blank` char, stop current attribute
-                    if c <= CHAR_SPACE {
+                    if c <= b' ' {
                         let name = &self.html[self.last_index..(self.current_index - 1)];
                         let position = Position { start: self.last_index, end: self.current_index - 1 };
                         let attribute = HTMLTagAttribute {
@@ -133,7 +127,7 @@ impl<'a> Iterator for HTMLTagAttributeIterator<'a> {
             } else {
 
                 // ignore `blank` char
-                if c <= CHAR_SPACE {
+                if c <= b' ' {
                     continue;
                 }
 
