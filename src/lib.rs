@@ -29,9 +29,9 @@
 //! Position { start: 75, end: 79 } HTMLTag { name: "a", html: "</a>", attributes: "", state: Closing }
 //! ```
 
-pub use base::*;
-pub use tag::*;
-pub use attribute::*;
+pub use base::{Position, HTMLTagState, HTMLTag, HTMLTagAttribute};
+pub use tag::{HTMLTagIterator, tag_iter};
+pub use attribute::{HTMLTagAttributeIterator, attr_iter};
 
 mod base;
 mod tag;
