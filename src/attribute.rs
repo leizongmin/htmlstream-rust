@@ -36,6 +36,7 @@ impl<'a> HTMLTagAttributeIterator<'a> {
         }
     }
 
+    #[inline]
     fn finished_item(&mut self) {
         self.is_attribute_start = false;
         self.is_quote_start = false;

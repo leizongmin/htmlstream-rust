@@ -101,24 +101,20 @@ impl<'a> Iterator for HTMLTagIterator<'a> {
                         tag_state = HTMLTagState::SelfClosing;
                     } else {
                         tag_state = HTMLTagState::Opening;
-                    }
+                    };
 
-                    let attributes_html: &str;
+                    let attributes_html =
                     if self.is_get_tag_name && self.attributes_start_index < self.current_index - 1 {
                         match tag_state {
                             HTMLTagState::SelfClosing => {
-                                attributes_html = &self.html[self.attributes_start_index..(self.current_index - 2)];
+                                &self.html[self.attributes_start_index..(self.current_index - 2)]
                             },
                             HTMLTagState::Opening | HTMLTagState::Closing => {
-                                attributes_html = &self.html[self.attributes_start_index..(self.current_index - 1)];
+                                &self.html[self.attributes_start_index..(self.current_index - 1)]
                             },
-                            _ => {
-                                attributes_html = "";
-                            }
+                            _ => "",
                         }
-                    } else {
-                        attributes_html = "";
-                    }
+                    } else { "" };
 
                     let tag = HTMLTag {
                         name: self.current_tag_name.to_string(),
