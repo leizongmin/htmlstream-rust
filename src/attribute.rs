@@ -1,4 +1,4 @@
-use super::*;
+use base::{Position, HTMLTagAttribute};
 
 
 #[derive(Debug)]

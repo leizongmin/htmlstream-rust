@@ -1,4 +1,4 @@
-use super::*;
+use base::{Position, HTMLTagState, HTMLTag};
 
 #[derive(Debug)]
 pub struct HTMLTagIterator<'a> {
