@@ -164,6 +164,7 @@ impl<'a> Iterator for HTMLTagIterator<'a> {
                 attributes: "".to_string(),
                 state: HTMLTagState::Text,
             };
+            self.last_index = self.current_index - 1;
             return Some((position, tag));
         }
 

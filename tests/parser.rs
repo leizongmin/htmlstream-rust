@@ -3,6 +3,22 @@ use htmlstream::*;
 use htmlstream::HTMLTagState::*;
 
 #[test]
+fn test_parse_rest_text() {
+    let html = "this is a test: <a href=\"http://rust-lang.org\" disabled>The Rust Programing Language</a>\r\n\r\n";
+    let mut list: Vec<(Position, HTMLTag)> = vec![];
+    for (pos, tag) in tag_iter(&html) {
+        list.push((pos, tag));
+    }
+    assert_eq!(list, [
+        (Position { start: 0, end: 16 }, HTMLTag { name: "".to_string(), html: "this is a test: ".to_string(), attributes: "".to_string(), state: Text }),
+        (Position { start: 16, end: 56 }, HTMLTag { name: "a".to_string(), html: "<a href=\"http://rust-lang.org\" disabled>".to_string(), attributes: "href=\"http://rust-lang.org\" disabled".to_string(), state: Opening }),
+        (Position { start: 56, end: 84 }, HTMLTag { name: "".to_string(), html: "The Rust Programing Language".to_string(), attributes: "".to_string(), state: Text }),
+        (Position { start: 84, end: 88 }, HTMLTag { name: "a".to_string(), html: "</a>".to_string(), attributes: "".to_string(), state: Closing }),
+        (Position { start: 88, end: 92 }, HTMLTag { name: "".to_string(), html: "\r\n\r\n".to_string(), attributes: "".to_string(), state: Text })
+    ]);
+}
+
+#[test]
 fn test_parse_tag() {
     let html = "this is a test: <a href=\"http://rust-lang.org\" disabled>The Rust Programing Language</a>";
     let mut list: Vec<(Position, HTMLTag)> = vec![];
