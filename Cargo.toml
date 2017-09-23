@@ -1,6 +1,6 @@
 [package]
 name = "htmlstream"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Zongmin Lei <leizongmin@gmail.com>"]
 readme = "README.md"
 
